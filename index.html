@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#171b1e">
+<title>Charli Terrain</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="appShell">
+  <header class="hero">
+    <div class="heroBrand">
+      <div class="helmet">⛑️</div>
+      <div><b>CHARLI <span>TERRAIN</span></b><small>SAISIE RAPIDE DES MISSIONS STM</small></div>
+    </div>
+    <div class="excavator" aria-hidden="true">🏗️</div>
+    <div class="motto">Voir • Constater • Saisir • Avancer !</div>
+  </header>
+
+  <main class="screen active" id="screenHome">
+    <section class="todayStrip">
+      <div><span>📅</span><small>Aujourd’hui</small><b id="todayDate">—</b></div>
+      <div><span>🕒</span><small>Heure</small><b id="todayTime">—</b></div>
+      <div><span>📍</span><small>Lieu</small><b>Gignac</b></div>
+      <div><span>📋</span><small>Missions</small><b><strong id="count">0</strong> en attente</b></div>
+    </section>
+
+    <button id="mic" class="primaryMission">
+      <span class="primaryIcon">🎙️</span>
+      <span class="primaryText"><b>NOUVELLE MISSION</b><small>Dictée vocale ou saisie rapide</small></span>
+      <span class="chev">›</span>
+    </button>
+    <div id="heard" class="heard">Exemple : « Voirie, remplacer le panneau rue de la République »</div>
+
+    <section class="actionGrid">
+      <button id="listBtn" class="actionCard dark"><span class="cardIcon">📝</span><b>Voir / corriger</b><small>les missions</small><i>›</i></button>
+      <button id="planningBtn" class="actionCard orange"><span class="cardIcon">📅</span><b>Planning</b><small>du jour</small><i>›</i></button>
+      <button id="syncNow" class="actionCard steelCard"><span class="cardIcon">🔄</span><b>Synchroniser</b><small>avec Charli STM</small><i>›</i></button>
+      <button id="pdfBtn" class="actionCard dark"><span class="cardIcon">📄</span><b>Envoyer PDF</b><small>export de secours</small><i>›</i></button>
+    </section>
+
+    <section class="syncStatus">
+      <div class="syncOk">✓</div>
+      <div class="syncText"><small>Dernière synchronisation</small><b id="lastSyncLabel">Jamais</b><p id="syncState">Synchronisation manuelle prête.</p></div>
+      <div class="syncSignal">📶<small>Charli STM</small></div>
+    </section>
+
+    <section class="shortcuts">
+      <h2>⛰️ Raccourcis terrain</h2>
+      <div class="shortcutGrid">
+        <button id="quickReport"><span>🚧</span><b>Signalement<br>rapide</b><i>›</i></button>
+        <button id="photoBtn"><span>📷</span><b>Photo</b><i>›</i></button>
+        <button id="historyBtn"><span>↶</span><b>Historique</b><i>›</i></button>
+      </div>
+      <input id="photoInput" type="file" accept="image/*" capture="environment" hidden>
+    </section>
+
+    <section class="hiddenData" aria-hidden="true"><div id="pcMissions"></div></section>
+  </main>
+
+  <main class="screen" id="screenMissions">
+    <div class="pageHead"><button class="backHome">‹</button><div><h1>Missions</h1><p>Créées sur le terrain et reçues du PC</p></div></div>
+    <div id="missionsPage"></div>
+  </main>
+
+  <main class="screen" id="screenSync">
+    <div class="pageHead"><button class="backHome">‹</button><div><h1>Synchronisation</h1><p>Transfert manuel avec Charli STM</p></div></div>
+    <section class="syncPanel">
+      <div class="syncBig">🔄</div>
+      <h2>Charli STM</h2>
+      <p id="syncPageState">Appuie sur le bouton pour envoyer les nouvelles missions et récupérer les mises à jour.</p>
+      <button id="syncPageBtn" class="yellowBtn">SYNCHRONISER MAINTENANT</button>
+      <div class="syncHelp">Le téléphone et le PC doivent être accessibles sur le même réseau local.</div>
+    </section>
+  </main>
+
+  <main class="screen" id="screenSettings">
+    <div class="pageHead"><button class="backHome">‹</button><div><h1>Réglages</h1><p>Charli Terrain</p></div></div>
+    <section class="settingsCard">
+      <h2>🔗 Liaison avec Charli STM</h2>
+      <p>La liaison est enregistrée lorsque tu ouvres sur le téléphone le lien généré par Charli STM.</p>
+      <div class="settingLine"><span>Mode de synchronisation</span><b>Manuel</b></div>
+      <div class="settingLine"><span>Missions en attente</span><b id="settingsPending">0</b></div>
+      <button id="clearBtn" class="dangerBtn">🗑️ Effacer les missions locales</button>
+    </section>
+  </main>
+
+  <nav class="bottomNav">
+    <button data-screen="home" class="active"><span>⌂</span><small>Accueil</small></button>
+    <button data-screen="missions"><span>▤</span><small>Missions</small></button>
+    <button data-screen="dictation" class="dictationTab"><span>🎙️</span><small>Dictée</small></button>
+    <button data-screen="sync"><span>↻</span><small>Sync</small></button>
+    <button data-screen="settings"><span>⚙</span><small>Réglages</small></button>
+  </nav>
+</div>
+
+<dialog id="editDlg">
+<form method="dialog" id="editForm">
+<h2 id="dlgTitle">Contrôle de la mission</h2>
+<label>Équipe<select id="team"></select></label>
+<label>Type de mission<select id="activity"></select></label>
+<label>Lieu<input id="location" placeholder="Rue, bâtiment, parc…"></label>
+<label>Titre / mission<input id="titleText"></label>
+<label>Description<textarea id="description"></textarea></label>
+<div class="actions"><button value="cancel" class="steel">Annuler</button><button id="saveBtn" value="default" class="green">✓ ENREGISTRER</button></div>
+</form>
+</dialog>
+
+<dialog id="listDlg"><div class="listHead"><h2>Missions enregistrées</h2><button onclick="listDlg.close()">✕</button></div><div id="missionList"></div></dialog>
+<dialog id="planningDlg"><div class="listHead"><h2>Planning reçu de Charli STM</h2><button onclick="planningDlg.close()">✕</button></div><div id="planningList"></div></dialog>
+
+<script src="app.js"></script>
+<script src="sync.js"></script>
+</body></html>

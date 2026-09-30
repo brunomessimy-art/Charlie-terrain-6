@@ -1,0 +1,9 @@
+{
+  "name": "Charli Terrain",
+  "short_name": "Charli Terrain",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#171b1e",
+  "theme_color": "#171b1e",
+  "icons": []
+}
